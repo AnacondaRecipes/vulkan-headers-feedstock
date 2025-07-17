@@ -1,0 +1,43 @@
+{% set version = "1.4.313.0" %}
+
+package:
+  name: libvulkan-headers
+  version: {{ version }}
+
+source:
+  url: https://github.com/KhronosGroup/Vulkan-Headers/archive/refs/tags/vulkan-sdk-{{ version }}.tar.gz
+  sha256: 20743c99a96c07290f24377360e7a12bdd2c465ba202e0c7ef2ec25d446cf61d
+
+build:
+  number: 0
+
+requirements:
+  build:
+    # This is just required to make sure that ${CMAKE_ARGS} is defined
+    - {{ stdlib("c") }}
+    - {{ compiler('cxx') }}
+    - cmake
+    - ninja
+
+test:
+  commands:
+    - test -f $PREFIX/include/vulkan/vulkan.h              # [not win]
+    - if not exist %LIBRARY_INC%\\vulkan\\vulkan.h exit 1  # [win]
+
+about:
+  home: https://www.lunarg.com/vulkan-sdk
+  license: Apache-2.0 OR MIT
+  license_family: OTHER
+  license_file:
+    - LICENSES/Apache-2.0.txt
+    - LICENSES/MIT.txt
+  summary: Vulkan Header files and API registry.
+  description: Vulkan header files and API registry
+  doc_url: https://www.lunarg.com/vulkan-sdk
+  dev_url: https://github.com/KhronosGroup/Vulkan-Headers
+
+extra:
+  feedstock-name: vulkan-headers
+  recipe-maintainers:
+    - JarrettSJohnson
+    - traversaro
